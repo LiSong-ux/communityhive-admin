@@ -1,13 +1,19 @@
 <template>
     <div class="login_page">
-        <Form class="form" :model="formItem">
-            <FormItem>
-                <Input v-model="formItem.admin" placeholder="请输入管理员账号"/>
-            </FormItem>
-            <FormItem>
-                <Input v-model="formItem.password" placeholder="请输入密码"/>
-            </FormItem>
-        </Form>
+        <div class="login_container">
+            <h2 class="login_title">系统登录</h2>
+            <Form class="form" :model="formItem">
+                <FormItem>
+                    <Input v-model="formItem.admin" size="large" placeholder="请输入管理员账号"/>
+                </FormItem>
+                <FormItem>
+                    <Input v-model="formItem.password" size="large" placeholder="请输入密码"/>
+                </FormItem>
+                <FormItem>
+                    <Button class="login_button" type="primary" size="large">登录</Button>
+                </FormItem>
+            </Form>
+        </div>
     </div>
 </template>
 
@@ -29,14 +35,28 @@
     .login_page {
         width: 100%;
         height: 100%;
+        position: fixed;
         background-color: #20222A;
     }
-    .form {
-        width: 350px;
-        margin-top: 15%;
-        padding: 35px 35px 15px 35px;
-        background: #f5f5f5;
-        border-radius: 5px;
-        border: 1px solid #eaeaea;
+
+    .login_container {
+        width: 400px;
+        height: 300px;
+        margin: 200px auto;
+        padding: 20px 25px;
+        background-color: #fff;
+        border-radius: 8px;
+        text-align: center;
     }
+
+    .login_title {
+        margin-top: 10px;
+        margin-bottom: 25px;
+    }
+
+    .login_button {
+        margin-top: 20px;
+        width: 100%;
+    }
+
 </style>
