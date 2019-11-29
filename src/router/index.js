@@ -24,7 +24,7 @@ const router = new VueRouter({
 });
 
 //全局守卫路由
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
     const LOGINURL = '/login';
     let url, user;
     url = to.path;
@@ -41,6 +41,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 
-});
+});*/
 
 export default router
