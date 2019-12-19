@@ -76,7 +76,7 @@
     }
 
     .logo {
-        height: 64px;
+        height: 65px;
         text-align: center;
         padding-top: 18px;
         background-color: #20222A;

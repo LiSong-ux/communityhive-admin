@@ -1,16 +1,28 @@
 <template>
-    <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-        <MenuItem name="1-1">
-            <Icon type="ios-navigate"></Icon>
-            <span>Option 1</span>
+    <Menu active-name="mainPage" theme="dark" width="auto" :class="menuitemClasses">
+        <MenuItem name="mainPage">
+            <Icon type="md-home" />
+            <span>主页</span>
         </MenuItem>
-        <MenuItem name="1-2">
-            <Icon type="ios-search"></Icon>
-            <span>Option 2</span>
+        <MenuItem name="user">
+            <Icon type="md-people" />
+            <span>用户</span>
         </MenuItem>
-        <MenuItem name="1-3">
+        <MenuItem name="announcement">
+            <Icon type="md-flag" />
+            <span>公告</span>
+        </MenuItem>
+        <MenuItem name="topic">
+            <Icon type="ios-paper" />
+            <span>帖子</span>
+        </MenuItem>
+        <MenuItem name="chart">
+            <Icon type="md-trending-up" />
+            <span>图表</span>
+        </MenuItem>
+        <MenuItem name="setting">
             <Icon type="ios-settings"></Icon>
-            <span>Option 3</span>
+            <span>设置</span>
         </MenuItem>
     </Menu>
 </template>
@@ -36,14 +48,6 @@
 </script>
 
 <style scoped>
-    .menu-icon {
-        transition: all .3s;
-    }
-
-    .rotate-icon {
-        transform: rotate(-90deg);
-    }
-
     .menu-item span {
         display: inline-block;
         overflow: hidden;
@@ -52,13 +56,6 @@
         white-space: nowrap;
         vertical-align: bottom;
         transition: width .2s ease .2s;
-    }
-
-    .menu-item i {
-        transform: translateX(0px);
-        transition: font-size .2s ease, transform .2s ease;
-        vertical-align: middle;
-        font-size: 16px;
     }
 
     .collapsed-menu span {
@@ -71,5 +68,22 @@
         transition: font-size .2s ease .2s, transform .2s ease .2s;
         vertical-align: middle;
         font-size: 22px;
+    }
+
+    .ivu-menu-dark {
+        background-color: #20222A;
+    }
+
+    .ivu-menu-item {
+        height: 60px;
+        font-size: 16px;
+    }
+
+    .ivu-menu-vertical .ivu-menu-item {
+        padding: 19px 24px;
+    }
+
+    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+        color: rgb(255, 208, 75);
     }
 </style>
