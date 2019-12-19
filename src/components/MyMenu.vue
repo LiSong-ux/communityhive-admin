@@ -1,26 +1,26 @@
 <template>
-    <Menu active-name="mainPage" theme="dark" width="auto" :class="menuitemClasses">
-        <MenuItem name="mainPage">
-            <Icon type="md-home" />
+    <Menu :active-name="navigator" theme="dark" width="auto" :class="menuitemClasses">
+        <MenuItem name="mainPage" to="/">
+            <Icon type="md-home"/>
             <span>主页</span>
         </MenuItem>
-        <MenuItem name="user">
-            <Icon type="md-people" />
+        <MenuItem name="user" to="/user">
+            <Icon type="md-people"/>
             <span>用户</span>
         </MenuItem>
-        <MenuItem name="announcement">
-            <Icon type="md-flag" />
+        <MenuItem name="announcement" to="/">
+            <Icon type="md-flag"/>
             <span>公告</span>
         </MenuItem>
-        <MenuItem name="topic">
-            <Icon type="ios-paper" />
+        <MenuItem name="topic" to="/">
+            <Icon type="ios-paper"/>
             <span>帖子</span>
         </MenuItem>
-        <MenuItem name="chart">
-            <Icon type="md-trending-up" />
+        <MenuItem name="chart" to="/">
+            <Icon type="md-trending-up"/>
             <span>图表</span>
         </MenuItem>
-        <MenuItem name="setting">
+        <MenuItem name="setting" to="/">
             <Icon type="ios-settings"></Icon>
             <span>设置</span>
         </MenuItem>
@@ -34,6 +34,11 @@
             isCollapsed: {
                 type: Boolean,
                 default: false
+            },
+        },
+        data() {
+            return {
+                navigator: 'mainPage',
             }
         },
         computed: {

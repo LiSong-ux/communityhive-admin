@@ -14,7 +14,7 @@
                           size="24"></Icon>
                 </Header>
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-                    Content
+                    <router-view/>
                 </Content>
             </Layout>
         </Layout>
@@ -34,6 +34,7 @@
             return {
                 isCollapsed: false,
                 minHeight: null,
+                navigator: 'mainPage',
             }
         },
         mounted() {
@@ -46,7 +47,6 @@
                     this.isCollapsed ? 'rotate-icon' : ''
                 ];
             },
-
         },
         methods: {
             collapsedSider() {
