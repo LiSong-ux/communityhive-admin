@@ -11,20 +11,24 @@
             return{
                 columns: [
                     {
-                        title: 'Name',
-                        key: 'name'
+                        title: '账号',
+                        key: 'account'
                     },
                     {
-                        title: 'Age',
-                        key: 'age'
+                        title: '用户名',
+                        key: 'username'
                     },
                     {
-                        title: 'Address',
-                        key: 'address'
+                        title: '邮箱',
+                        key: 'email'
                     },
                     {
-                        title: 'Date',
-                        key: 'date'
+                        title: '性别',
+                        key: 'gender'
+                    },
+                    {
+                        title: '',
+                        key: ''
                     }
                 ],
                 data: [
