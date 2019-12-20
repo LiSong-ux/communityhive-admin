@@ -66,11 +66,21 @@
             }
         },
         created:function () {
-
+            this.init();
         },
         methods: {
+            init(){
+                this.getAllUser();
+            },
             getAllUser(){
-                this.axios.get()
+                this.axios.get('/allUser').then(response=>{
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.data = resp.data;
+                })
             },
         }
     }
