@@ -12,52 +12,66 @@
                 columns: [
                     {
                         title: '账号',
-                        key: 'account'
+                        key: 'account',
+                        align: 'center'
                     },
                     {
                         title: '用户名',
-                        key: 'username'
+                        key: 'username',
+                        align: 'center'
                     },
                     {
                         title: '邮箱',
-                        key: 'email'
+                        key: 'email',
+                        align: 'center'
                     },
                     {
                         title: '性别',
-                        key: 'gender'
+                        key: 'gender',
+                        align: 'center'
                     },
                     {
-                        title: '',
-                        key: ''
+                        title: '发帖数量',
+                        key: 'topicCount',
+                        align: 'center'
+                    },
+                    {
+                        title: '回复数量',
+                        key: 'replyCount',
+                        align: 'center'
+                    },
+                    {
+                        title: '登录次数',
+                        key: 'loginCount',
+                        align: 'center'
+                    },
+                    {
+                        title: '注册时间',
+                        key: 'registerTime',
+                        align: 'center'
                     }
                 ],
                 data: [
                     {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
+                        account: 'LiSong-ux',
+                        username: '沨殘淩渡',
+                        email: '546993317@qq.com',
+                        gender: '男',
+                        topicCount: '2',
+                        replyCount: '2',
+                        loginCount: '2',
+                        registerTime: '2019-11-20 19:35:46',
                     },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
                 ]
             }
+        },
+        created:function () {
+
+        },
+        methods: {
+            getAllUser(){
+                this.axios.get()
+            },
         }
     }
 </script>
