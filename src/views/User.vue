@@ -37,37 +37,30 @@
                     },
                     {
                         title: '发帖数量',
-                        key: 'topicCount',
+                        key: 'topiccount',
                         align: 'center'
                     },
                     {
                         title: '回复数量',
-                        key: 'replyCount',
+                        key: 'replycount',
                         align: 'center'
                     },
                     {
                         title: '登录次数',
-                        key: 'loginCount',
+                        key: 'logincount',
                         align: 'center'
                     },
                     {
                         title: '注册时间',
-                        key: 'registerTime',
-                        align: 'center'
+                        key: 'registertime',
+                        align: 'center',
+                        render: (h,params)=> {
+                            let time = this.moment(params.row.registertime).format('YYYY-MM-DD HH:mm:ss');
+                            return h('span',time);
+                        }
                     }
                 ],
-                data: [
-                    {
-                        account: 'LiSong-ux',
-                        username: '沨殘淩渡',
-                        email: '546993317@qq.com',
-                        gender: '男',
-                        topicCount: '2',
-                        replyCount: '2',
-                        loginCount: '2',
-                        registerTime: '2019-11-20 19:35:46',
-                    },
-                ]
+                data: []
             }
         },
         created:function () {
