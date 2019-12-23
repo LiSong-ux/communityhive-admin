@@ -11,6 +11,11 @@
             return{
                 columns: [
                     {
+                        title: 'ID',
+                        key: 'id',
+                        align: 'center'
+                    },
+                    {
                         title: '账号',
                         key: 'account',
                         align: 'center'
