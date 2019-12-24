@@ -1,14 +1,19 @@
 <template>
     <div class="user_main">
         <Table :columns="columns" :data="data"></Table>
+        <div class="paging_box">
+            <Page v-if="paging.total>0" :current="paging.currentPage" :page-size="paging.pageSize"
+                  :total="paging.total" show-elevator @on-change="changePage"/>
+        </div>
     </div>
 </template>
 
 <script>
+    let moment = require("moment");
     export default {
         name: "User",
-        data(){
-            return{
+        data() {
+            return {
                 columns: [
                     {
                         title: 'ID',
@@ -54,36 +59,55 @@
                         title: '注册时间',
                         key: 'registertime',
                         align: 'center',
-                        render: (h,params)=> {
-                            let time = this.moment(params.row.registertime).format('YYYY-MM-DD HH:mm:ss');
-                            return h('span',time);
+                        render: (h, params) => {
+                            return h('span', {}, this.dateFormat(params.row.registertime));
                         }
                     }
                 ],
-                data: []
+                data: [],
+                paging: {
+                    currentPage: 1,
+                    pageSize: 100,
+                    total: 0,
+                },
             }
         },
-        created:function () {
+        created: function () {
             this.init();
         },
         methods: {
-            init(){
+            init() {
                 this.getAllUser();
             },
-            getAllUser(){
-                this.axios.get('/allUser').then(response=>{
+            getAllUser() {
+                let initParams = {
+                    'page': this.paging.currentPage
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/allUser', params).then(response => {
                     let resp = response.data;
                     if (resp.status != 200) {
                         this.$Message.error(resp.msg);
                         return;
                     }
                     this.data = resp.data;
+                    this.paging.total = resp.data.length;
                 })
+            },
+            changePage(page) {
+                this.paging.currentPage = page;
+                this.getAllUser();
+            },
+            dateFormat: function (tick) {
+                return moment(tick).format("YYYY-MM-DD HH:mm:ss");
             },
         }
     }
 </script>
 
 <style scoped>
-
+    .paging_box {
+        float: right;
+        margin: 20px 45px 0px 0px;
+    }
 </style>
