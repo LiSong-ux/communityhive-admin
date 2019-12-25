@@ -12,7 +12,7 @@
             <Icon type="md-flag"/>
             <span>公告</span>
         </MenuItem>
-        <MenuItem name="topic" to="/">
+        <MenuItem name="topic" to="/topic">
             <Icon type="ios-paper"/>
             <span>帖子</span>
         </MenuItem>

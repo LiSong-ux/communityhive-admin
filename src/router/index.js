@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login'
 import User from '../views/User'
+import Topic from '../views/Topic'
 
 Vue.use(VueRouter);
 
@@ -17,9 +18,14 @@ const routes = [
         component: Home,
         children: [
             {
-                path:'/user',
-                name:'user',
+                path: '/user',
+                name: 'user',
                 component: User
+            },
+            {
+                path: '/topic',
+                name: 'topic',
+                component: Topic
             },
         ]
     },
