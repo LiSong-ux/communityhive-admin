@@ -21,28 +21,18 @@
                         align: 'center'
                     },
                     {
-                        title: '账号',
-                        key: 'account',
+                        title: '标签',
+                        key: 'label',
                         align: 'center'
                     },
                     {
-                        title: '用户名',
+                        title: '标题',
+                        key: 'title',
+                        align: 'center'
+                    },
+                    {
+                        title: '作者',
                         key: 'username',
-                        align: 'center'
-                    },
-                    {
-                        title: '邮箱',
-                        key: 'email',
-                        align: 'center'
-                    },
-                    {
-                        title: '性别',
-                        key: 'gender',
-                        align: 'center'
-                    },
-                    {
-                        title: '发帖数量',
-                        key: 'topiccount',
                         align: 'center'
                     },
                     {
@@ -51,16 +41,24 @@
                         align: 'center'
                     },
                     {
-                        title: '登录次数',
-                        key: 'logincount',
+                        title: '查看数量',
+                        key: 'viewcount',
                         align: 'center'
                     },
                     {
-                        title: '注册时间',
-                        key: 'registertime',
+                        title: '发布时间',
+                        key: 'submittime',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {}, this.dateFormat(params.row.registertime));
+                            return h('span', {}, this.dateFormat(params.row.submittime));
+                        }
+                    },
+                    {
+                        title: '最后回复时间',
+                        key: 'lastSubmit',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {}, this.dateFormat(params.row.lastSubmit));
                         }
                     }
                 ],
@@ -84,14 +82,14 @@
                     'page': this.paging.currentPage
                 };
                 let params = this.qs.stringify(initParams);
-                this.axios.post('/allUser', params).then(response => {
+                this.axios.post('/allTopic', params).then(response => {
                     let resp = response.data;
                     if (resp.status != 200) {
                         this.$Message.error(resp.msg);
                         return;
                     }
-                    this.data = resp.data;
-                    this.paging.total = resp.data.length;
+                    this.data = resp.data.topicList;
+                    this.paging.total = resp.data.topicCount;
                 })
             },
             changePage(page) {

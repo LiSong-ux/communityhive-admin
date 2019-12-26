@@ -90,8 +90,8 @@
                         this.$Message.error(resp.msg);
                         return;
                     }
-                    this.data = resp.data;
-                    this.paging.total = resp.data.length;
+                    this.data = resp.data.userList;
+                    this.paging.total = resp.data.userCount;
                 })
             },
             changePage(page) {
