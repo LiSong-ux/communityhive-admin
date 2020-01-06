@@ -60,9 +60,28 @@
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.lastSubmit));
                         }
-                    }
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('Button', {
+                                props: {
+                                    size: 'small',
+                                    type: 'error'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.toDeleteId = params.row.id;
+                                        this.deleteTopic();
+                                    }
+                                }
+                            }, '删除')
+                        }
+                    },
                 ],
                 data: [],
+                toDeleteId: null,
                 paging: {
                     currentPage: 1,
                     pageSize: 100,
@@ -75,9 +94,9 @@
         },
         methods: {
             init() {
-                this.getAllUser();
+                this.getAllTopic();
             },
-            getAllUser() {
+            getAllTopic() {
                 let initParams = {
                     'page': this.paging.currentPage
                 };
@@ -92,9 +111,24 @@
                     this.paging.total = resp.data.topicCount;
                 })
             },
+            deleteTopic() {
+                let initParams = {
+                    'id': this.toDeleteId
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/deleteTopic', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.$Message.success('删除成功！');
+                    this.getAllTopic();
+                })
+            },
             changePage(page) {
                 this.paging.currentPage = page;
-                this.getAllUser();
+                this.getAllTopic();
             },
             dateFormat: function (tick) {
                 return moment(tick).format("YYYY-MM-DD HH:mm:ss");
