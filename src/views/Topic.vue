@@ -1,13 +1,12 @@
 <template>
     <div class="user_main">
-        <Button type="primary" @click="showDetail()">帖子详情</Button>
         <Table :columns="columns" :data="data"></Table>
         <div class="paging_box">
             <Page v-if="paging.total>0" :current="paging.currentPage" :page-size="paging.pageSize"
                   :total="paging.total" show-elevator @on-change="changePage"/>
         </div>
 
-        <Modal v-model="showModal" :title="topic.title" width="50" footer-hide>
+        <Modal class="modal" v-model="showModal" :title="topic.title" width="50" footer-hide>
             <div class="topic">
                 <div class="topic_top">
                     <div class="topic_label">【<span>{{ topic.label }}</span>】</div>
@@ -16,6 +15,7 @@
                 <div class="topic_head">
                     <div class="topic_author">{{ topic.username }}</div>
                     <div class="topic_time">发表于 {{ topic.submittime | dateFormat }}</div>
+                    <Button type="warning" size='small' class="button_delete" @click="deleteTopic(topic.id)">删除</Button>
                     <div class="floor">楼主</div>
                 </div>
                 <div class="topic_content" v-html="topic.content"></div>
@@ -24,11 +24,12 @@
                 <div class="reply_head">
                     <div class="reply_author">{{ reply.username }}</div>
                     <div class="reply_time">发表于 {{ reply.submittime | dateFormat }}</div>
+                    <Button type="warning" size='small' class="button_delete" @click="deleteReply(reply.id)">删除</Button>
                     <div class="floor">{{ reply.floor }}楼</div>
                 </div>
                 <div class="reply_content">
                     <div class="reply_quote" v-if="reply.quote!=0">
-                        <div class="quote_icon_e">
+                        <div class="quote_icon_e" v-if="replyList[reply.quoteIndex]">
                             <div class="reply_quote_head">
                                 <span class="reply_quote_info">{{ replyList[reply.quoteIndex].username }} 发表于 {{ replyList[reply.quoteIndex].submittime | dateFormat }}</span>
                                 <span class="reply_quote_floor">{{ replyList[reply.quoteIndex].floor }}楼</span>
@@ -39,8 +40,9 @@
                     <span v-html="reply.content"></span>
                 </div>
             </div>
-            <div class="paging_box">
-                <Page v-if="replyPaging.total>0" :current="replyPaging.currentPage" :page-size="replyPaging.pageSize"
+            <div class="replyPaging_box">
+                <Page class="replyPaging" v-if="replyPaging.total>0" :current="replyPaging.currentPage"
+                      :page-size="replyPaging.pageSize"
                       :total="replyPaging.total" show-elevator @on-change="changeReplyPage"/>
             </div>
         </Modal>
@@ -54,11 +56,11 @@
         data() {
             return {
                 columns: [
-                    {
+                    /*{
                         title: 'ID',
                         key: 'id',
                         align: 'center'
-                    },
+                    },*/
                     {
                         title: '标签',
                         key: 'label',
@@ -69,10 +71,11 @@
                         key: 'title',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                                style: {},
+                            return h('a', {
+                                class: 'table_title',
                                 on: {
                                     click: () => {
+                                        this.replyList = [];
                                         this.currentTopicId = params.row.id;
                                         this.getTopicDetail();
                                     }
@@ -122,8 +125,7 @@
                                 },
                                 on: {
                                     click: () => {
-                                        this.toDeleteId = params.row.id;
-                                        this.deleteTopic();
+                                        this.deleteTopic(params.row.id);
                                     }
                                 }
                             }, '删除')
@@ -134,7 +136,6 @@
                 topic: {},
                 replyList: [],
                 pageReplyList: [],
-                toDeleteId: null,
                 paging: {
                     currentPage: 1,
                     pageSize: 100,
@@ -142,12 +143,12 @@
                 },
                 replyPaging: {
                     currentPage: 1,
-                    pageSize: 100,
+                    pageSize: 50,
                     total: 0,
                 },
                 showModal: false,
                 topicTitle: '',
-                currentTopicId:null,
+                currentTopicId: null,
             }
         },
         created: function () {
@@ -179,7 +180,6 @@
                 };
                 let params = this.qs.stringify(initParams);
                 this.axios.post('/topic', params).then(response => {
-                    this.replyList = [];
                     let resp = response.data;
                     if (resp.status != 200) {
                         this.$Message.error(resp.msg);
@@ -219,13 +219,13 @@
                             }
                         }
                     }
-                    this.paging.total = resp.data.replyCount;
+                    this.replyPaging.total = resp.data.replyCount;
                     this.showModal = true;
                 });
             },
-            deleteTopic() {
+            deleteTopic(id) {
                 let initParams = {
-                    'id': this.toDeleteId
+                    'id': id
                 };
                 let params = this.qs.stringify(initParams);
                 this.axios.post('/deleteTopic', params).then(response => {
@@ -234,20 +234,33 @@
                         this.$Message.error(resp.msg);
                         return;
                     }
-                    this.$Message.success('删除成功！');
                     this.getAllTopic();
+                    this.showModal = false;
+                    this.$Message.success('删除成功！');
+                })
+            },
+            deleteReply(id) {
+                let initParams = {
+                    'id': id
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/deleteReply', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.$Message.success('删除成功！');
+                    this.getTopicDetail();
                 })
             },
             changePage(page) {
                 this.paging.currentPage = page;
                 this.getAllTopic();
             },
-            changeReplyPage(page){
+            changeReplyPage(page) {
                 this.replyPaging.currentPage = page;
                 this.getTopicDetail();
-            },
-            showDetail() {
-                this.showModal = true;
             },
             dateFormat: function (tick) {
                 return moment(tick).format("YYYY-MM-DD HH:mm:ss");
@@ -380,6 +393,33 @@
         font-weight: bold;
         color: darkgrey;
         margin-left: 15px;
+    }
+
+    .replyPaging_box {
+        overflow: hidden;
+    }
+
+    .replyPaging {
+        float: right;
+        margin: 0px 45px 0px 0px;
+    }
+
+    .button_delete {
+        float: right;
+    }
+
+</style>
+
+<style>
+
+    .table_title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #515a6e;
+    }
+
+    .table_title:hover {
+        color: #2d8cf0;
     }
 
 </style>
