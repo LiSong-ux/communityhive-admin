@@ -2,15 +2,15 @@
     <div class="login_page">
         <div class="login_container">
             <h2 class="login_title">系统登录</h2>
-            <Form class="form" :model="formItem">
+            <Form class="form" :model="form">
                 <FormItem>
-                    <Input v-model="formItem.admin" size="large" placeholder="请输入管理员账号"/>
+                    <Input v-model="form.admin" size="large" placeholder="请输入管理员账号"/>
                 </FormItem>
                 <FormItem>
-                    <Input v-model="formItem.password" size="large" placeholder="请输入密码"/>
+                    <Input v-model="form.password" type="password" size="large" placeholder="请输入密码"/>
                 </FormItem>
                 <FormItem>
-                    <Button class="login_button" type="primary" size="large">登录</Button>
+                    <Button class="login_button" type="primary" size="large" @click="login()">登录</Button>
                 </FormItem>
             </Form>
         </div>
@@ -22,10 +22,26 @@
         name: "Login",
         data() {
             return {
-                formItem: {
+                form: {
                     admin: '',
                     password: '',
+                    terminal: '',
                 },
+            }
+        },
+        methods: {
+            login() {
+                this.form.terminal = navigator.userAgent;
+                let params = this.qs.stringify(this.form);
+                this.axios.post('/admin/login', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    sessionStorage.setItem('user', resp.data);
+                    this.$router.push('/');
+                })
             }
         }
     }
