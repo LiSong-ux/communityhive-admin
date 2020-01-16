@@ -64,6 +64,7 @@
                     {
                         title: '标签',
                         key: 'label',
+                        width: 160,
                         align: 'center'
                     },
                     {
@@ -86,21 +87,25 @@
                     {
                         title: '作者',
                         key: 'username',
+                        width: 200,
                         align: 'center'
                     },
                     {
                         title: '回复数量',
+                        width: 95,
                         key: 'replycount',
                         align: 'center'
                     },
                     {
                         title: '查看数量',
+                        width: 95,
                         key: 'viewcount',
                         align: 'center'
                     },
                     {
                         title: '发布时间',
                         key: 'submittime',
+                        width: 200,
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.submittime));
@@ -109,6 +114,7 @@
                     {
                         title: '最后回复时间',
                         key: 'lastSubmit',
+                        width: 200,
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.lastSubmit));
@@ -116,6 +122,7 @@
                     },
                     {
                         title: '操作',
+                        width: 120,
                         align: 'center',
                         render: (h, params) => {
                             return h('Button', {

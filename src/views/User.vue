@@ -18,6 +18,7 @@
                     {
                         title: 'ID',
                         key: 'id',
+                        width: 100,
                         align: 'center'
                     },
                     {
@@ -28,6 +29,7 @@
                     {
                         title: '用户名',
                         key: 'username',
+                        // width: 200,
                         align: 'center'
                     },
                     {
@@ -38,6 +40,7 @@
                     {
                         title: '性别',
                         key: 'gender',
+                        // width: 90,
                         align: 'center',
                         render: (h, params) => {
                             let gender_CN;
@@ -54,21 +57,25 @@
                     {
                         title: '发帖数量',
                         key: 'topiccount',
+                        width: 95,
                         align: 'center'
                     },
                     {
                         title: '回复数量',
                         key: 'replycount',
+                        width: 95,
                         align: 'center'
                     },
                     {
                         title: '登录次数',
                         key: 'logincount',
+                        width: 100,
                         align: 'center'
                     },
                     {
                         title: '注册时间',
                         key: 'registertime',
+                        width: 240,
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.registertime));

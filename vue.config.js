@@ -1,16 +1,16 @@
 // vue.config.js
 module.exports = {
-  publicPath: '/',
-  outputDir: 'dist', // ´ò°üµÄÄ¿Â¼
-  lintOnSave: true, // ÔÚ±£´æÊ±Ð£Ñé¸ñÊ½
-  productionSourceMap: false, // Éú²ú»·¾³ÊÇ·ñÉú³É SourceMap
+  publicPath: '/admin',
+  outputDir: 'dist', // æ‰“åŒ…çš„ç›®å½•
+  lintOnSave: true, // åœ¨ä¿å­˜æ—¶æ ¡éªŒæ ¼å¼
+  productionSourceMap: false, // ç”Ÿäº§çŽ¯å¢ƒæ˜¯å¦ç”Ÿæˆ SourceMap
   devServer: {
-    open: true, // Æô¶¯·þÎñºóÊÇ·ñ´ò¿ªä¯ÀÀÆ÷
+    open: true, // å¯åŠ¨æœåŠ¡åŽæ˜¯å¦æ‰“å¼€æµè§ˆå™¨
     host: '0.0.0.0',
-    port: 8080, // ·þÎñ¶Ë¿Ú
+    port: 8080, // æœåŠ¡ç«¯å£
     https: false,
     hotOnly: false,
-    proxy: null, // ÉèÖÃ´úÀí
+    proxy: null, // è®¾ç½®ä»£ç†
     before: app => {}
   },
 }
