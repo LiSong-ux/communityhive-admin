@@ -38,7 +38,18 @@
                     {
                         title: '性别',
                         key: 'gender',
-                        align: 'center'
+                        align: 'center',
+                        render: (h, params) => {
+                            let gender_CN;
+                            if (params.row.gender == 0) {
+                                gender_CN = '女';
+                            } else if (params.row.gender == 1) {
+                                gender_CN = '男';
+                            } else {
+                                gender_CN = '未知';
+                            }
+                            return h('span', {}, gender_CN);
+                        }
                     },
                     {
                         title: '发帖数量',

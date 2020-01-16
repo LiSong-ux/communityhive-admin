@@ -12,6 +12,7 @@
                 <Header :style="{padding: 0}" class="layout-header-bar">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu"
                           size="24"></Icon>
+                    <Button type="info" class="logout" @click="logout()">退出登录</Button>
                 </Header>
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
                     <router-view/>
@@ -51,7 +52,25 @@
         methods: {
             collapsedSider() {
                 this.$refs.side1.toggleCollapse();
-            }
+            },
+            logout() {
+                this.axios.post('/logout').then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message['error']({
+                            background: true,
+                            content: resp.message
+                        });
+                        return;
+                    }
+                    this.$Message['success']({
+                        background: true,
+                        content: '退出成功'
+                    });
+                    sessionStorage.removeItem('user');
+                    this.$router.push('/login')
+                });
+            },
         }
     }
 </script>
@@ -81,6 +100,12 @@
         padding-top: 18px;
         background-color: #20222A;
         border-bottom: 1px solid gray;
+    }
+
+    .logout {
+        float: right;
+        margin-top: 16px;
+        margin-right: 20px;
     }
 
 </style>
