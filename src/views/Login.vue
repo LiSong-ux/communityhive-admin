@@ -4,7 +4,7 @@
             <h2 class="login_title">系统登录</h2>
             <Form class="form" :model="form">
                 <FormItem>
-                    <Input v-model="form.admin" size="large" placeholder="请输入管理员账号"/>
+                    <Input v-model="form.account" size="large" placeholder="请输入管理员账号"/>
                 </FormItem>
                 <FormItem>
                     <Input v-model="form.password" type="password" size="large" placeholder="请输入密码"/>
@@ -23,7 +23,7 @@
         data() {
             return {
                 form: {
-                    admin: '',
+                    account: '',
                     password: '',
                     terminal: '',
                 },
@@ -33,7 +33,7 @@
             login() {
                 this.form.terminal = navigator.userAgent;
                 let params = this.qs.stringify(this.form);
-                this.axios.post('/admin/login', params).then(response => {
+                this.axios.post('/login', params).then(response => {
                     let resp = response.data;
                     if (resp.status != 200) {
                         this.$Message.error(resp.msg);
