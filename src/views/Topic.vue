@@ -56,21 +56,16 @@
         data() {
             return {
                 columns: [
-                    /*{
-                        title: 'ID',
-                        key: 'id',
-                        align: 'center'
-                    },*/
                     {
                         title: '标签',
                         key: 'label',
-                        width: 160,
+                        width: 120,
                         align: 'center'
                     },
                     {
                         title: '标题',
                         key: 'title',
-                        align: 'center',
+                        //align: 'center',
                         render: (h, params) => {
                             return h('a', {
                                 class: 'table_title',
@@ -93,7 +88,7 @@
                     {
                         title: '发布时间',
                         key: 'submittime',
-                        width: 200,
+                        width: 180,
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.submittime));
@@ -108,7 +103,7 @@
                     {
                         title: '最后回复时间',
                         key: 'lastSubmit',
-                        width: 200,
+                        width: 180,
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.lastSubmit));
