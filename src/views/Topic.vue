@@ -87,11 +87,11 @@
                     },
                     {
                         title: '发布时间',
-                        key: 'submittime',
+                        key: 'submitTime',
                         width: 180,
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {}, this.dateFormat(params.row.submittime));
+                            return h('span', {}, this.dateFormat(params.row.submitTime));
                         }
                     },
                     {
@@ -112,13 +112,13 @@
                     {
                         title: '回复数量',
                         width: 95,
-                        key: 'replycount',
+                        key: 'replyCount',
                         align: 'center'
                     },
                     {
                         title: '查看数量',
                         width: 95,
-                        key: 'viewcount',
+                        key: 'viewCount',
                         align: 'center'
                     },
                     {

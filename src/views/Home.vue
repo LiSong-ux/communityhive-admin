@@ -54,15 +54,14 @@
                 this.$refs.side1.toggleCollapse();
             },
             logout() {
-                this.axios.post('/logout').then(response => {
-                    let resp = response.data;
+                this.axios.post('/logout').then(() => {
+                    /*let resp = response.data;
                     if (resp.status != 200) {
                         this.$Message['error']({
                             background: true,
                             content: resp.message
                         });
-                        return;
-                    }
+                    }*/
                     this.$Message['success']({
                         background: true,
                         content: '退出成功'

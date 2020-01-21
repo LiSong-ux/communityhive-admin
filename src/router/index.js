@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login'
 import User from '../views/User'
 import Topic from '../views/Topic'
+import Notice from '../views/Notice'
+import SubmitNotice from '../views/SubmitNotice'
 
 Vue.use(VueRouter);
 
@@ -23,9 +25,19 @@ const routes = [
                 component: User
             },
             {
+                path: '/notice',
+                name: 'notice',
+                component: Notice
+            },
+            {
                 path: '/topic',
                 name: 'topic',
                 component: Topic
+            },
+            {
+                path: '/toSubmitNotice',
+                name: 'submitNotice',
+                component: SubmitNotice
             },
         ]
     },
