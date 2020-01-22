@@ -8,6 +8,21 @@
             <Page v-if="paging.total>0" :current="paging.currentPage" :page-size="paging.pageSize"
                   :total="paging.total" show-elevator @on-change="changePage"/>
         </div>
+        <Modal class="modal" v-model="showModal" :title="notice.title" width="50" footer-hide>
+            <div class="topic">
+                <div class="topic_top">
+                    <div class="topic_label">【<span>{{ notice.label }}</span>】</div>
+                    <div class="topic_title">{{ notice.title }}</div>
+                </div>
+                <div class="topic_head">
+                    <div class="topic_author">{{ notice.username }}</div>
+                    <div class="topic_time">发表于 {{ notice.submittime | dateFormat }}</div>
+                    <Button type="warning" size='small' class="button_delete" @click="deleteNotice(notice.id)">删除
+                    </Button>
+                </div>
+                <div class="topic_content" v-html="notice.content"></div>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -27,6 +42,17 @@
                     {
                         title: '标题',
                         key: 'title',
+                        render: (h, params) => {
+                            return h('a', {
+                                class: 'table_title',
+                                on: {
+                                    click: () => {
+                                        this.currentNoticeId = params.row.id;
+                                        this.getNoticeDetail();
+                                    }
+                                }
+                            }, params.row.title);
+                        }
                     },
                     {
                         title: '作者',
@@ -51,7 +77,7 @@
                     },
                     {
                         title: '最后编辑时间',
-                        key: 'lastSubmit',
+                        key: 'lastSubmitTime',
                         width: 180,
                         align: 'center',
                         render: (h, params) => {
@@ -82,7 +108,7 @@
                                 },
                                 on: {
                                     click: () => {
-                                        this.deleteTopic(params.row.id);
+                                        this.deleteNotice(params.row.id);
                                     }
                                 }
                             }, '删除')
@@ -90,11 +116,14 @@
                     },
                 ],
                 data: [],
+                notice: {},
                 paging: {
                     currentPage: 1,
-                    pageSize: 100,
+                    pageSize: 50,
                     total: 0,
                 },
+                showModal: false,
+                currentNoticeId: null,
             }
         },
         created: function () {
@@ -119,8 +148,41 @@
                     this.paging.total = resp.data.noticeCount;
                 })
             },
+            getNoticeDetail() {
+                let initParams = {
+                    'id': this.currentNoticeId,
+                    'terminal': navigator.userAgent
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/notice', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        this.$router.push('/');
+                        return;
+                    }
+                    this.notice = resp.data;
+                    this.showModal = true;
+                });
+            },
             addNotice() {
                 this.$router.push('/toSubmitNotice');
+            },
+            deleteNotice(id) {
+                let initParams = {
+                    'id': id
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/deleteNotice', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllNotice();
+                    this.showModal = false;
+                    this.$Message.success('删除成功！');
+                })
             },
             changePage(page) {
                 this.paging.currentPage = page;
@@ -149,6 +211,80 @@
     .paging_box {
         float: right;
         margin: 20px 45px 0px 0px;
+    }
+
+    .topic {
+        width: 98%;
+        padding: 20px;
+        margin: 0px auto;
+        border-radius: 10px;
+        border: 2px solid #819799;
+    }
+
+    .topic_top {
+        width: 100%;
+        border-bottom: 3px solid #1c5899;
+    }
+
+    .topic_label {
+        display: inline;
+    }
+
+    .topic_label span {
+        color: #ff78f2;
+    }
+
+    .topic_title {
+        display: inline;
+        padding: 10px 5px;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .topic_head {
+        width: 100%;
+        font-size: 1.2em;
+        margin-top: 25px;
+        border-bottom: 1px solid #999;
+    }
+
+    .topic_author {
+        color: #27313e;
+        display: inline;
+        padding: 0px 15px;
+        border-right: 2px solid darkgrey;
+    }
+
+    .topic_time {
+        color: cadetblue;
+        display: inline;
+        padding: 0px 15px;
+    }
+
+    .topic_content {
+        width: 100%;
+        padding: 0px 15px;
+        margin-top: 25px;
+        font-size: 1.3em;
+        color: black;
+    }
+
+    .button_delete {
+        float: right;
+    }
+
+</style>
+
+<style>
+
+    .table_title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #515a6e;
+    }
+
+    .table_title:hover {
+        color: #2d8cf0;
     }
 
 </style>

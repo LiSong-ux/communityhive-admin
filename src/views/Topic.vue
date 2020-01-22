@@ -155,7 +155,6 @@
                     total: 0,
                 },
                 showModal: false,
-                topicTitle: '',
                 currentTopicId: null,
             }
         },
