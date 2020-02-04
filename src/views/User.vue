@@ -56,13 +56,13 @@
                     },
                     {
                         title: '发帖数量',
-                        key: 'topiccount',
+                        key: 'topicCount',
                         width: 95,
                         align: 'center'
                     },
                     {
                         title: '回复数量',
-                        key: 'replycount',
+                        key: 'replyCount',
                         width: 95,
                         align: 'center'
                     },
