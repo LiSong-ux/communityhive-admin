@@ -68,17 +68,17 @@
                     },
                     {
                         title: '登录次数',
-                        key: 'logincount',
+                        key: 'loginCount',
                         width: 100,
                         align: 'center'
                     },
                     {
                         title: '注册时间',
-                        key: 'registertime',
+                        key: 'registerTime',
                         width: 240,
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {}, this.dateFormat(params.row.registertime));
+                            return h('span', {}, this.dateFormat(params.row.registerTime));
                         }
                     }
                 ],
