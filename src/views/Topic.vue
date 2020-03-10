@@ -67,8 +67,14 @@
                         key: 'title',
                         //align: 'center',
                         render: (h, params) => {
+                            let titleClass;
+                            if (params.row.hided == true) {
+                                titleClass = 'table_title_hided';
+                            } else {
+                                titleClass = 'table_title';
+                            }
                             return h('a', {
-                                class: 'table_title',
+                                class: titleClass,
                                 on: {
                                     click: () => {
                                         this.replyList = [];
@@ -123,9 +129,9 @@
                     },
                     {
                         title: '操作',
-                        width: 120,
+                        width: 190,
                         align: 'center',
-                        render: (h, params) => {
+                        /*render: (h, params) => {
                             return h('Button', {
                                 props: {
                                     size: 'small',
@@ -137,6 +143,77 @@
                                     }
                                 }
                             }, '删除')
+                        }*/
+                        render: (h, params) => {
+                            let lockedButton;
+                            let lockedType;
+                            let locked;
+                            if (params.row.locked == true) {
+                                lockedButton = '解锁';
+                                lockedType = 'success';
+                                locked = 0;
+                            } else {
+                                lockedButton = '锁定';
+                                lockedType = 'warning';
+                                locked = 1;
+                            }
+
+                            let hidedButton;
+                            let hidedType;
+                            let hided;
+                            if (params.row.hided == true) {
+                                hidedButton = '显示';
+                                hidedType = 'success';
+                                hided = 0;
+                            } else {
+                                hidedButton = '隐藏';
+                                hidedType = 'warning';
+                                hided = 1;
+                            }
+                            return h('div',
+                                [
+                                    h('Button', {
+                                        props: {
+                                            type: lockedType,
+                                            size: 'small',
+                                            ghost: 'true',
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.lockTopic(params.row.id, locked)
+                                            }
+                                        }
+                                    }, lockedButton),
+                                    h('Button', {
+                                        props: {
+                                            type: hidedType,
+                                            size: 'small',
+                                        },
+                                        style: {
+                                            marginLeft: '10px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.hideTopic(params.row.id, hided);
+                                            }
+                                        }
+                                    }, hidedButton),
+                                    h('Button', {
+                                        props: {
+                                            type: 'error',
+                                            size: 'small',
+                                        },
+                                        style: {
+                                            marginLeft: '10px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.deleteNotice(params.row.id);
+                                            }
+                                        }
+                                    }, '删除'),
+                                ]
+                            );
                         }
                     },
                 ],
@@ -229,6 +306,40 @@
                     this.replyPaging.total = resp.data.replyCount;
                     this.showModal = true;
                 });
+            },
+            lockTopic(id, locked) {
+                let initParams = {
+                    'id': id,
+                    'locked': locked
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/lockTopic', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllTopic();
+                    this.showModal = false;
+                    this.$Message.success('操作成功！');
+                })
+            },
+            hideTopic(id, hided) {
+                let initParams = {
+                    'id': id,
+                    'hided': hided
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/hideTopic', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllTopic();
+                    this.showModal = false;
+                    this.$Message.success('操作成功！');
+                })
             },
             deleteTopic(id) {
                 let initParams = {
@@ -423,6 +534,12 @@
         font-size: 1.2em;
         font-weight: bold;
         color: #515a6e;
+    }
+
+    .table_title_hided {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #c5c8ce;
     }
 
     .table_title:hover {
