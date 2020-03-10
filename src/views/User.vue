@@ -80,6 +80,36 @@
                         render: (h, params) => {
                             return h('span', {}, this.dateFormat(params.row.registerTime));
                         }
+                    },
+                    {
+                        title: '操作',
+                        width: '120',
+                        align: 'center',
+                        render: (h, params) => {
+                            let lockedButton;
+                            let lockedType;
+                            let locked;
+                            if (params.row.locked == true) {
+                                lockedButton = '解封';
+                                lockedType = 'success';
+                                locked = 0;
+                            } else {
+                                lockedButton = '封禁';
+                                lockedType = 'warning';
+                                locked = 1;
+                            }
+                            return h('Button', {
+                                props: {
+                                    size: 'small',
+                                    type: lockedType,
+                                },
+                                on: {
+                                    click: () => {
+                                        this.lockUser(params.row.id, locked);
+                                    }
+                                }
+                            }, lockedButton);
+                        }
                     }
                 ],
                 data: [],
@@ -110,6 +140,22 @@
                     }
                     this.data = resp.data.userList;
                     this.paging.total = resp.data.userCount;
+                })
+            },
+            lockUser(id, locked) {
+                let initParams = {
+                    'id': id,
+                    'locked': locked
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/lockUser', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllUser();
+                    this.$Message.success('操作成功！');
                 })
             },
             changePage(page) {
