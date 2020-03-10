@@ -43,8 +43,14 @@
                         title: '标题',
                         key: 'title',
                         render: (h, params) => {
+                            let titleClass;
+                            if (params.row.hided == true) {
+                                titleClass = 'table_title_hided';
+                            } else {
+                                titleClass = 'table_title';
+                            }
                             return h('a', {
-                                class: 'table_title',
+                                class: titleClass,
                                 on: {
                                     click: () => {
                                         this.currentNoticeId = params.row.id;
@@ -98,9 +104,9 @@
                     },
                     {
                         title: '操作',
-                        width: 120,
+                        width: 140,
                         align: 'center',
-                        render: (h, params) => {
+                        /*render: (h, params) => {
                             return h('Button', {
                                 props: {
                                     size: 'small',
@@ -112,6 +118,49 @@
                                     }
                                 }
                             }, '删除')
+                        }*/
+                        render: (h, params) => {
+                            let hidedButton;
+                            let hidedType;
+                            let hided;
+                            if (params.row.hided == true) {
+                                hidedButton = '上架';
+                                hidedType = 'success';
+                                hided = 0;
+                            } else {
+                                hidedButton = '下架';
+                                hidedType = 'warning';
+                                hided = 1;
+                            }
+                            return h('div',
+                                [
+                                    h('Button', {
+                                        props: {
+                                            type: hidedType,
+                                            size: 'small',
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.hideNotice(params.row.id, hided);
+                                            }
+                                        }
+                                    }, hidedButton),
+                                    h('Button', {
+                                        props: {
+                                            type: 'error',
+                                            size: 'small',
+                                        },
+                                        style: {
+                                            marginLeft: '10px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.deleteNotice(params.row.id);
+                                            }
+                                        }
+                                    }, '删除'),
+                                ]
+                            );
                         }
                     },
                 ],
@@ -167,6 +216,28 @@
             },
             addNotice() {
                 this.$router.push('/toSubmitNotice');
+            },
+            /**
+             * hided:【0：上架；1：下架】
+             * @param id
+             * @param operate
+             */
+            hideNotice(id, hided) {
+                let initParams = {
+                    'id': id,
+                    'hided': hided
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/hideNotice', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllNotice();
+                    this.showModal = false;
+                    this.$Message.success('操作成功！');
+                })
             },
             deleteNotice(id) {
                 let initParams = {
@@ -281,6 +352,12 @@
         font-size: 1.2em;
         font-weight: bold;
         color: #515a6e;
+    }
+
+    .table_title_hided {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #c5c8ce;
     }
 
     .table_title:hover {
