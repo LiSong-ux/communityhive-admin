@@ -391,7 +391,7 @@
 
     .paging_box {
         float: right;
-        margin: 20px 45px 0px 0px;
+        margin: 20px 45px 30px 0px;
     }
 
     .topic {
