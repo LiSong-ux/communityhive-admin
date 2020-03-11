@@ -39,7 +39,7 @@
                         this.$Message.error(resp.msg);
                         return;
                     }
-                    sessionStorage.setItem('user', resp.data);
+                    sessionStorage.setItem('user', JSON.stringify(resp.data));
                     this.$router.push('/');
                 })
             }

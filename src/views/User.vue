@@ -98,10 +98,16 @@
                                 lockedType = 'warning';
                                 locked = 1;
                             }
+                            let disabled = false;
+                            let user = JSON.parse(sessionStorage.getItem('user'));
+                            if (params.row.id == 1 || params.row.id == user.id) {
+                                disabled = true;
+                            }
                             return h('Button', {
                                 props: {
                                     size: 'small',
                                     type: lockedType,
+                                    disabled: disabled,
                                 },
                                 on: {
                                     click: () => {

@@ -176,7 +176,7 @@
                                         props: {
                                             type: lockedType,
                                             size: 'small',
-                                            ghost: 'true',
+                                            ghost: true,
                                         },
                                         on: {
                                             click: () => {
