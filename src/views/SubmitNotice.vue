@@ -42,7 +42,35 @@
                 }
             }
         },
+        mounted(){
+            this.init();
+        },
         methods: {
+            init() {
+                let id=this.$route.query.id;
+                if (id == null) {
+                    return;
+                }
+                this.getNoticeDetail(id);
+            },
+            getNoticeDetail(id) {
+                let initParams = {
+                    'id': id,
+                    'terminal': navigator.userAgent
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/notice', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        this.$router.push('/');
+                        return;
+                    }
+                    this.notice = resp.data;
+                    this.$store.commit('setContent', this.notice.content);
+                    this.$refs.editor.setContent();
+                });
+            },
             submitNotice() {
                 this.$refs.editor.getContent();
                 if (this.notice.label === '') {

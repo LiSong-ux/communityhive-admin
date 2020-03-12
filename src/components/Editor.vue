@@ -7,6 +7,7 @@
 
 <script>
     import E from 'wangeditor';
+
     export default {
         name: 'editor',
         props: {
@@ -18,7 +19,7 @@
         data() {
             return {
                 editor: null,
-                editorContent: ''
+                editorContent: '',
             }
         },
         watch: {
@@ -32,6 +33,10 @@
         methods: {
             getContent: function () {
                 this.$store.commit('setContent', this.editorContent);
+            },
+            setContent: function () {
+                this.editorContent = this.$store.getters.getContent;
+                this.editor.txt.html(this.editorContent);
             }
         },
         mounted() {

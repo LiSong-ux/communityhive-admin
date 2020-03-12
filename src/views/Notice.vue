@@ -104,7 +104,7 @@
                     },
                     {
                         title: '操作',
-                        width: 140,
+                        width: 190,
                         align: 'center',
                         /*render: (h, params) => {
                             return h('Button', {
@@ -136,8 +136,22 @@
                                 [
                                     h('Button', {
                                         props: {
+                                            type: 'info',
+                                            size: 'small',
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.editNotice(params.row.id);
+                                            }
+                                        }
+                                    }, '编辑'),
+                                    h('Button', {
+                                        props: {
                                             type: hidedType,
                                             size: 'small',
+                                        },
+                                        style: {
+                                            marginLeft: '10px'
                                         },
                                         on: {
                                             click: () => {
@@ -216,6 +230,9 @@
             },
             addNotice() {
                 this.$router.push('/toSubmitNotice');
+            },
+            editNotice(id) {
+                this.$router.push('/toSubmitNotice?id=' + id);
             },
             /**
              * hided:【0：上架；1：下架】
