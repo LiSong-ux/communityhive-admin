@@ -31,9 +31,15 @@
             },
         },
         methods: {
+            /**
+             * 将富文本编辑器中的文本存储到store中
+             */
             getContent: function () {
                 this.$store.commit('setContent', this.editorContent);
             },
+            /**
+             * 从store中获取文本并将文本在编辑器编辑区域显示
+             */
             setContent: function () {
                 this.editorContent = this.$store.getters.getContent;
                 this.editor.txt.html(this.editorContent);

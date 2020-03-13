@@ -34,6 +34,7 @@
         data() {
             return {
                 notice: {
+                    id: null,
                     label: '',
                     title: '',
                     content: '',
@@ -42,12 +43,12 @@
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.init();
         },
         methods: {
             init() {
-                let id=this.$route.query.id;
+                let id = this.$route.query.id;
                 if (id == null) {
                     return;
                 }
@@ -66,7 +67,11 @@
                         this.$router.push('/');
                         return;
                     }
-                    this.notice = resp.data;
+                    this.notice.id = resp.data.id;
+                    this.notice.label = resp.data.label;
+                    this.notice.title = resp.data.title;
+                    this.notice.content = resp.data.content;
+                    this.notice.position = resp.data.position;
                     this.$store.commit('setContent', this.notice.content);
                     this.$refs.editor.setContent();
                 });
@@ -107,14 +112,26 @@
                 this.notice.content = this.$store.getters.getContent;
                 this.notice.terminal = navigator.userAgent;
                 let params = this.qs.stringify(this.notice);
-                this.axios.post('/submitNotice', params).then(response => {
-                    let resp = response.data;
-                    if (resp.status != 200) {
-                        this.instance('error', resp.msg);
-                        return;
-                    }
-                    this.$router.push('/notice');
-                })
+                if (this.notice.id == null) {
+                    this.axios.post('/submitNotice', params).then(response => {
+                        let resp = response.data;
+                        if (resp.status != 200) {
+                            this.instance('error', resp.msg);
+                            return;
+                        }
+                        this.$router.push('/notice');
+                    });
+                } else {
+                    this.axios.post('/editNotice', params).then(response => {
+                        let resp = response.data;
+                        if (resp.status != 200) {
+                            this.instance('error', resp.msg);
+                            return;
+                        }
+                        this.$Message.success('编辑成功！');
+                        this.$router.push('/notice');
+                    });
+                }
             },
             instance(type, content) {
                 switch (type) {
