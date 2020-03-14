@@ -104,22 +104,22 @@
                     },
                     {
                         title: '操作',
-                        width: 190,
+                        width: 250,
                         align: 'center',
-                        /*render: (h, params) => {
-                            return h('Button', {
-                                props: {
-                                    size: 'small',
-                                    type: 'error'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.deleteNotice(params.row.id);
-                                    }
-                                }
-                            }, '删除')
-                        }*/
                         render: (h, params) => {
+                            let lockedButton;
+                            let lockedType;
+                            let locked;
+                            if (params.row.locked) {
+                                lockedButton = '解锁';
+                                lockedType = 'success';
+                                locked = 0;
+                            } else {
+                                lockedButton = '锁定';
+                                lockedType = 'warning';
+                                locked = 1;
+                            }
+
                             let hidedButton;
                             let hidedType;
                             let hided;
@@ -145,6 +145,21 @@
                                             }
                                         }
                                     }, '编辑'),
+                                    h('Button', {
+                                        props: {
+                                            type: lockedType,
+                                            size: 'small',
+                                            ghost: true,
+                                        },
+                                        style: {
+                                            marginLeft: '10px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.lockNotice(params.row.id, locked);
+                                            }
+                                        }
+                                    }, lockedButton),
                                     h('Button', {
                                         props: {
                                             type: hidedType,
@@ -233,6 +248,23 @@
             },
             editNotice(id) {
                 this.$router.push('/toSubmitNotice?id=' + id);
+            },
+            lockNotice(id, locked) {
+                let initParams = {
+                    'id': id,
+                    'locked': locked
+                };
+                let params = this.qs.stringify(initParams);
+                this.axios.post('/lockNotice', params).then(response => {
+                    let resp = response.data;
+                    if (resp.status != 200) {
+                        this.$Message.error(resp.msg);
+                        return;
+                    }
+                    this.getAllNotice();
+                    this.showModal = false;
+                    this.$Message.success('操作成功！');
+                })
             },
             /**
              * hided:【0：上架；1：下架】
